@@ -1,0 +1,45 @@
+.help {
+    width: 40px;
+    position: relative;
+    display: inline-table;
+}
+
+.help .question {
+    height: 20px;
+    width: 20px;
+    background: rgb(75, 110, 156);
+    color: white;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: center;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.help .popup {
+    /* display: table; */
+    /* min-width: 100px; */
+    /* max-width: 300px; */
+    width: 200px;
+    /* width: fit-content; */
+    font-size: 14px;
+    text-align: left;
+    overflow: hidden;
+    opacity: 0;
+    transition: 0.2s;
+    position: absolute;
+    visibility: hidden;
+    top: -3px;
+    left: 25px;
+    background-color: rgb(75, 110, 156);
+    color: white;
+    padding: 3px 5px;
+    border-radius: 5px;
+    z-index: 100;
+}
+
+.help:hover .popup {
+    opacity: 1;
+    visibility: visible;
+}

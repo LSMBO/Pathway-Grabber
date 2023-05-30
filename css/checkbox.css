@@ -1,0 +1,63 @@
+.switch {
+    display: inline-block;
+    position: relative;
+    width: 54px;
+    height: 26px;
+    cursor: pointer;
+    overflow: hidden;
+    vertical-align: middle;
+}
+
+.switch input {
+    position: absolute;
+    /* top: -30px; */
+    top: -30px;
+    width: 0;
+    height: 0;
+}
+
+.switch input+span {
+    position: absolute;
+    top: 0px;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f37149;
+    border-radius: 5px;
+}
+
+.switch input+span:before {
+    content: "";
+    display: inline-block;
+    position: absolute;
+    top: 50%;
+    left: 4px;
+    width: 12px;
+    height: 18px;
+    background: white;
+    border-radius: 3px;
+    transform: translateY(-50%);
+    transition: all .5s;
+}
+
+.switch input:checked+span {
+    background: #04AA6D;
+}
+
+.switch input:checked+span:before {
+    left: 38px;
+}
+
+.switch span:after {
+    content: 'NO';
+    font-size: x-small;
+    font-weight: bold;
+    color: white;
+    position: absolute;
+    left: 26px;
+}
+
+.switch input:checked+span:after {
+    content: 'YES';
+    left: 10px;
+}

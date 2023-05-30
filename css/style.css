@@ -1,0 +1,186 @@
+html, body, .tabcontent, iframe {
+  /* height: 100%; */
+  height: fit-content;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* Style the tab */
+.tab {
+  overflow: hidden;
+  border: 1px solid #ccc;
+  background-color: #f1f1f1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.tab button {
+  background-color: inherit;
+  float: left;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.tab button.active {
+  background-color: #ccc;
+}
+
+/* Style the tab content */
+.tabcontent {
+  display: none;
+  /* padding: 6px 12px;
+  border: 1px solid #ccc;
+  border-top: none; */
+  /* width: 100%;
+  height: 100%; */
+} 
+
+/* iframe { */
+  /* width: 100%;
+  height: 100%; */
+  /* width: 100vw;
+  height: 100vh; */
+/* } */
+
+.data {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.data td, table th {
+  border: 1px solid #ddd;
+  padding: 8px;
+  font-size: small;
+}
+
+.data tr:nth-child(even){background-color: #f2f2f2;}
+
+.data tr:hover {background-color: #ddd;}
+
+.data th {
+  padding-top: 12px;
+  padding-bottom: 12px;
+  text-align: left;
+  background-color: #04AA6D;
+  color: white;
+}
+
+.data a {
+  /* background-color: #04AA6D; */
+  background-color: #777777;
+  color: white;
+  padding: 2px 5px;
+  margin: 1px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+#tab-settings table {
+  table-layout: fixed;
+  margin-top: 5px;
+}
+
+#tab-settings tr {
+  line-height: 1.7em;
+}
+
+#tab-settings td {
+  /* border: 1px solid red; */
+  padding: 1px 5px;
+}
+
+#tab-settings a {
+  color:#fff;
+  background-color: #ff9900;
+  width: 24px;
+  height: 10px;
+  display: inline-table;
+  border-radius: 50%;
+  /* font-size: 10px; */
+  text-align: center;
+  text-decoration: none;
+  /* box-shadow: inset -1px -1px 1px 0px rgba(0,0,0,0.25); */
+  cursor: help;
+}
+
+#input-file {
+  width: 75%;
+}
+
+#btn-export {
+  border-width: 0px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  padding: 10px 24px;
+  cursor: pointer;
+  position: absolute;
+  top: 13px;
+  right: 13px;
+  background-color: #b954b8;
+  opacity: 0;
+}
+#btn-export:hover {
+  background-color: rgb(132, 29, 160);
+}
+
+.browse {
+  border-width: 0px;
+  border-radius: 5px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  padding: 5px 15px;
+  margin-left: 10px;
+  background-color: rgb(75, 110, 156);
+}
+.browse:hover {
+  background-color: rgb(48, 79, 121);
+}
+
+.btn-group {
+  display: block;
+  position: relative;
+  width: 100%;
+  /* border: 3px solid purple; */
+  display: flex;
+  justify-content: center;
+}
+
+.btn-group button {
+  border-width: 0px;
+  border-radius: 5px;
+  color: white; /* White text */
+  padding: 10px 24px; /* Some padding */
+  cursor: pointer; /* Pointer/hand icon */
+  float: left; /* Float the buttons side by side */
+  margin: 25px 100px;
+  font-weight: bold;
+}
+
+#btn-submit {
+  background-color: #04AA6D;
+}
+
+#btn-submit:hover {
+  background-color: #3e8e41;
+}
+
+#btn-reset {
+  background-color: #aa0404; /* Green background */
+}
+#btn-reset:hover {
+  background-color: #8e3e3e;
+}
+
+.ko { background-color: #ffe333; }
+.ok { background-color: #428fd3; }
+.up { background-color: #ff4c33; }
+.do { background-color: #53c326; }

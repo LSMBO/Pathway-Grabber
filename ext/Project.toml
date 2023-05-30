@@ -1,0 +1,22 @@
+name = "PathwayGrabber"
+uuid = "fef97351-73f0-4ce8-b256-eea79cf5f55b"
+authors = ["AlexandreBurel <AlexandreBurel@users.noreply.github.com>"]
+version = "0.1.0"
+
+[deps]
+Base64 = "2a0f44e3-6c83-55bd-87e4-b1978d98bd5f"
+Combinatorics = "861a8166-3701-5b0c-9a16-15d98fcdc6aa"
+Dates = "ade2ca70-3891-5945-98fb-dc099432e06a"
+DelimitedFiles = "8bb1440f-4735-579b-a4ab-409b98df4dab"
+FilesystemDatastructures = "89f0c457-83d8-4998-bfff-8b4a338c9833"
+GZip = "92fee26a-97fe-5a0c-ad85-20a5f3185b63"
+Gzip_jll = "be1be57a-8558-53c3-a7e5-50095f79957e"
+HTTP = "cd3eb016-35fb-5094-929b-558a96fad6f3"
+Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
+JSON = "682c06a0-de6a-54ab-a142-c8b1cf79cde6"
+Logging = "56ddb016-857b-54e1-b83d-db4d58db5568"
+LoggingExtras = "e6f89c97-d47a-5376-807f-9c37f3926c36"
+OrderedCollections = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
+Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
+XLSX = "fdbf4ff8-1666-58a4-91e7-1b58723a45e0"
+ZipFile = "a5390f91-8eb1-5f08-bee0-b1d1ffed6cea"

@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/checkbox.css">
+    <link rel="stylesheet" href="./css/help.css">
+    <link rel="stylesheet" href="./css/progressbar.css">
+    <title>Pathway Grabber</title>
+  </head>
+  <body>
+     <div id="progress">
+        <progress class="pure-material-progress-circular"/>
+    </div>
+    <div class="tab">
+        <button id="settings-tab" class="tablinks" onclick="openTab(event, 'tab-settings')">Settings</button>
+        <button id="entries-tab" class="tablinks" onclick="openTab(event, 'tab-entries')">Entries</button>
+        <button id="map-tab" class="tablinks" onclick="openTab(event, 'tab-maps')">Pathway maps</button>
+        <button id="html-tab" class="tablinks" onclick="openTab(event, 'tab-html')">Detailled view</button>
+        <button id="about-tab" class="tablinks" onclick="openTab(event, 'tab-about')">About</button>
+    </div>
+    <button id="btn-export" type="button">Export</button>
+    
+    <div id="tab-settings" class="tabcontent" style="display: none;">
+        <table>
+            <tr>
+                <td><label>Excel input file</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">A valid Excel file with at least a list of identifiers</div>
+                    </div></td>
+                <td>
+                    <!-- <input id="input-file" type="file" accept=".xlsx" /> -->
+                    <input id="input-file" type="text" /><button class="browse" type="button" id="btn-browse">Browse...</button>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="sheet-number">Number of the sheet containing the data</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Only this sheet will be read</div>
+                    </div></td>
+                <td>
+                    <input id="sheet-number" type="text" pattern="[0-9]{1,3}" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="header-line">Number of the header line</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">The first line to read, all lines before will be skipped, all lines below will be considered as data. Condition names may be retrieved from this line</div>
+                    </div></td>
+                <td>
+                    <input id="header-line" type="text" pattern="[0-9]{1,3}" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="input-type">Input data type</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Uniprot accession numbers will be searched for pathway mapping, the online check will get the current entries for each identifier (it can be useful for old entries that have been renamed or merged). Duplicate entries will be skipped.</div>
+                    </div></td>
+                <td>
+                    <select id="input-type">
+                        <option value="uniprot" selected="true">Uniprot accession numbers (P12345) or entry names
+                            (INS_HUMAN)
+                        </option>
+                        <option value="uniprotcheck">Uniprot accession numbers or entry names, with an online check for
+                            newer
+                            versions</option>
+                        <option value="kegg">Kegg compounds identifiers</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <!-- on change, show/hide p-site-col -->
+                <td><label for="has-site">Data have a modification site associated to each identifier</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Use this option if your input file contains scores matching for an identifier and a modification site (two separate columns). In this case, duplicate entries can be allowed, as long as the modification sites are different.</div>
+                    </div></td>
+                <td>
+                    <label class="switch">
+                        <input id="has-site" type="checkbox" value="1" onchange="toggleShow(event, 'p-site-col')" />
+                        <span></span>
+                    </label>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="input-content">Input file content</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">What should we be looking for in the input file? In the last case, the file is expected to have a series of consecutive columns with a Tukey value and a fold change for each condition.</div>
+                    </div></td>
+                <td>
+                    <select id="input-content"
+                        onchange="toggleScores(event, 'p-pval-col', 'p-tukey-col', 'p-fc-col', 'p-conds')">
+                        <option value="none">Only a list of identifiers</option>
+                        <option value="pvalue" selected="true">Identifiers and Anova p-values</option>
+                        <option value="pvalue_fc">Identifiers, Anova p-values and Fold Change</option>
+                        <option value="conditions">Identifiers, Anova p-values and multiple conditions each with a Tukey
+                            value
+                            and a Fold Change</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="id-col">Identifiers column</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Mandatory column name where the identifiers are present.</div>
+                    </div></td>
+                <td>
+                    <input id="id-col" type="text" pattern="[a-zA-Z]{1,3}" />
+                </td>
+            </tr>
+            <tr id="p-site-col" style="display: none;">
+                <td><label for="site-col">Modification sites column</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Column name for modification sites</div>
+                    </div></td>
+                <td>
+                    <input id="site-col" type="text" pattern="[a-zA-Z]{1,3}" />
+                </td>
+            </tr>
+            <tr id="p-pval-col" style="display: table-row;">
+                <td><label for="pval-col">Anova p-value column</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">Column name for p-values (values are expected to be real numbers).</div>
+                    </div></td>
+                <td>
+                    <input id="pval-col" type="text" pattern="[a-zA-Z]{1,3}" />
+                </td>
+            </tr>
+            <tr id="p-tukey-col" style="display: none;">
+                <td><label for="tukey-col">Tukey value first column</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">First column name for Tukey values (values are expected to be real numbers). The Tukey value for the next condition is expected two columns later.</div>
+                    </div></td>
+                <td>
+                    <input id="tukey-col" type="text" pattern="[a-zA-Z]{1,3}" />
+                </td>
+            </tr>
+            <tr id="p-fc-col" style="display: none;">
+                <td><label for="fc-col">Fold change first column</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">First column name for fold change values (values are expected to be real numbers). The fold change for the next condition is expected two columns later.</div>
+                    </div></td>
+                <td>
+                    <input id="fc-col" type="text" pattern="[a-zA-Z]{1,3}" />
+                </td>
+            </tr>
+            <tr id="p-conds" style="display: none;">
+                <td><label for="conditions">Condition names</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">The list of conditions you have in your input file. If the list is empty or does not match the actual number of conditions, condition names will be searched in the header line.</div>
+                    </div></td>
+                <td>
+                    <textarea id="conditions" rows="5" cols="78"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td><label for="pval-threshold">Anova p-value threshold</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">The threshold value above which the entry will be considered as significant. This value is only considered if data contain p-values.</div>
+                    </div></td>
+                <td>
+                    <input id="pval-threshold" type="text" value="0.05" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="tukey-threshold">Tukey threshold</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">The threshold value above which the entry will be considered as significant. This value is only considered if data contain Tukey values.</div>
+                    </div></td>
+                <td>
+                    <input id="tukey-threshold" type="text" value="0.05" />
+                </td>
+            </tr>
+            <tr>
+                <td><label for="fc-threshold">Fold change threshold</label>
+                    <div class="help">
+                        <div class="question">?</div>
+                        <div class="popup">The threshold value above used to tell if a significant entry is downregulated or upregulated. This value is only considered if data contain fold change values.</div>
+                    </div></td>
+                <td>
+                    <input id="fc-threshold" type="text" value="1.5" />
+                </td>
+            </tr>
+        </table>
+        <div class="btn-group">
+            <button id="btn-submit" type="button">Submit</button>
+            <button id="btn-reset">Reset</button>
+        </div>
+    </div>
+    <div id="tab-entries" class="tabcontent">
+        <table id="tbl-entries" class="data"></table>
+    </div>
+    <div id="tab-maps" class="tabcontent">
+        <table id="tbl-maps" class="data"></table>
+    </div>
+    <div id="tab-html" class="tabcontent">
+        <iframe id="local-html" scrolling="no" style="width: 100%; height: 100vh;"></iframe>
+    </div>
+    <div id="tab-about" class="tabcontent">
+        <table id="tbl-about" class="data"></table>
+    </div>
+
+    <script type='text/javascript' src="./renderer.js"></script>
+  </body>
+</html>
