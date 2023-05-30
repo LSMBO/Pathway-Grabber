@@ -25,6 +25,7 @@ Pathway Grabber is a user-friendly tool for biologists and proteomists, helping 
 
 Pathway Grabber has been designed to work on Windows systems. It was developped with Julia and ElectronJS so it is possible to adapt it to work on other systems.
 To install Pathway Grabber, the easiest way is to download the [latest release](https://github.com/LSMBO/Pathway-Grabber/releases/latest) and double-click on the INSTALL.bat file. It will decompress and install the required packages.
+
 If you clone the repository, you need to have nodeJS, git and Julia installed. The suggested versions that we used during the development were nodeJS v20.2.0, git v2.40.1 and Julia 1.8.5. You also have to install the Julia packages, the best way to do that is to check the command in the INSTALL.bat file. Finally you have to compile the ElectronJS code (follow the instructions [here](https://www.electronjs.org/docs/latest/tutorial/tutorial-packaging))
 
 Now all you have to do is to execute the file **Pathway Grabber.bat** (or run *npm run start* if your environment variables are already set properly).
