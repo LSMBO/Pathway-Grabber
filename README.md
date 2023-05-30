@@ -20,3 +20,11 @@ Pathway Grabber is a user-friendly tool for biologists and proteomists, helping 
 
 * Chazarin, B.; Benhaim-Delarbre, M.; Brun, C.; Anzeraey, A.; Bertile, F.; Terrien, J. Molecular Liver Fingerprint Reflects the Seasonal Physiology of the Grey Mouse Lemur (Microcebus murinus) during Winter. Int. J. Mol. Sci. 2022, 23, 4254. https://doi.org/10.3390/ijms23084254
 * Tascher, G.; Burban, A.; Camus, S.; Plumel, M.; Chanon, S.; Le Guevel, R.; Shevchenko, V.; Van Dorsselaer, A.; Lefai, E.; Guguen-Guillouzo, C.; Bertile, F. In-Depth Proteome Analysis Highlights HepaRG Cells as a Versatile Cell System Surrogate for Primary Human Hepatocytes. Cells 2019, 8, 192. https://doi.org/10.3390/cells8020192
+
+# Instructions
+
+Pathway Grabber has been designed to work on Windows systems. It was developped with Julia and ElectronJS so it is possible to adapt it to work on other systems.
+To install Pathway Grabber, the easiest way is to download the [latest release](https://github.com/LSMBO/Pathway-Grabber/releases/latest) and double-click on the INSTALL.bat file. It will decompress and install the required packages.
+If you clone the repository, you need to have nodeJS, git and Julia installed. The suggested versions that we used during the development were nodeJS v20.2.0, git v2.40.1 and Julia 1.8.5. You also have to install the Julia packages, the best way to do that is to check the command in the INSTALL.bat file.
+
+Now all you have to do is to execute the file **Pathway Grabber.bat** (or run *npm run start* if your environment variables are already set properly).
