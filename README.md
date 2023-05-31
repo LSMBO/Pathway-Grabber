@@ -1,8 +1,10 @@
 # Pathway Grabber
 
+<p>
+<img src="resources/logo.png" width="200" />
 This repository is dedicated to the portable version of Pathway Grabber, that contains a graphical user interface. Pathway Grabber has been developped with Julia 1.8.5 and the GUI with ElectronJS.
 The CLI version of Pathway Grabber is in the ext/ subdirectory, it was originally written as a Galaxy tool.
-![Pathway Grabber logo](/resources/logo.png "Pathway Grabber")
+</p>
 
 Pathway Grabber is a user-friendly tool for biologists and proteomists, helping them to get a comprehensive view of the molecular regulations from large lists of proteins, including the statistical metrics of differential analysis. Therefore, it allows to greatly accelerate omics data mining and it helps to nicely draw graphical representations of omics results (1, 2). Today, Pathway Grabber constitutes a solid basis for many future improvements (e.g. network analysis, extension to other resources like Reactome).
 
@@ -17,11 +19,13 @@ From an Excel file containing UniProt or KEGG identifiers and associated statist
 Output HTML files correspond to all Kegg Pathway maps that contain at least one protein from the dataset. On these maps, the information that has been made available is highlighted using a colour code relative to the ‘statistical category’ (for any item of interest, whether it is, e.g., a module, a protein/gene, a compound, a relation). Additional details about statistical scoring is also given as tooltip text items. All the items in the HTML files are clickable and reroute the user to the corresponding KEGG entries, but these files can also be used completely offline, once they are generated they do not require an Internet connection anymore.
 The ouput Excel file summarizes the whole information that is highlighted on maps, one sheet listing all the pathways associated with each with protein, another sheet listing all proteins associated to each revealed pathway.
 
-<img src="resources/img-settings.png" width="200" />
-<img src="resources/img-entries.png" width="200" />
-<img src="resources/img-maps.png" width="200" />
-<img src="resources/img-details.png" width="200" />
-<img src="resources/img-about.png" width="200" />
+<p>
+    <img src="resources/img-settings.png" width="350" />
+    <img src="resources/img-entries.png" width="350" />
+    <img src="resources/img-maps.png" width="350" />
+    <img src="resources/img-details.png" width="350" />
+    <img src="resources/img-about.png" width="350" />
+</p>
 
 # Instructions
 
