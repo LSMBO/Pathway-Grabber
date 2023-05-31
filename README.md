@@ -1,6 +1,6 @@
 # Pathway Grabber
 
-![logo](resources/logo.png){: style="float: left"; width="100"}
+<img style="float:left" src="resources/logo.png" width="100" />
 
 This repository is dedicated to the portable version of Pathway Grabber, that contains a graphical user interface. Pathway Grabber has been developped with Julia 1.8.5 and the GUI with ElectronJS.
 The CLI version of Pathway Grabber is in the ext/ subdirectory, it was originally written as a Galaxy tool.
