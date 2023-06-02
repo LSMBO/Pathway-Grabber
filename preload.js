@@ -6,6 +6,7 @@ contextBridge.exposeInMainWorld('electronAPI', {
   getDimensions: (args) => ipcRenderer.invoke('get-dimensions', args),
   exportOutput: () => ipcRenderer.send('export-output'),
   getTestInputFile: () => ipcRenderer.invoke('test'),
+  fakeRun: () => ipcRenderer.invoke('fake-run'),
 })
 
 window.addEventListener('DOMContentLoaded', () => {

@@ -33,8 +33,14 @@ function readTsvFile(file) {
   // console.log("Reading file "+file)
   content = [];
   let data = fs.readFileSync(file, 'utf8').split('&crlf;');
+  // i = 0;
   data.forEach((row, index) => {
     if(row != "") content.push(row.split('\t'))
+    // if(row != "") {
+    //   cells = row.split('\t');
+    //   cells.unshift(i++);
+    //   content.push(cells);
+    // }
   })
   // console.log(`-> The file contains ${content.length} rows and ${content[0].length} columns`)
   return content;
@@ -71,6 +77,20 @@ function handleSubmitButton(evt, settings) {
   return [outputPath, entries, maps, summary];
 }
 
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+async function fakeRun(evt) {
+  // get the test tsv files and load their content
+  outputPath = `${app.getAppPath().replace(/\\/g, "/")}/test`;
+  summary = readTsvFile(outputPath + "/Summary.tsv");
+  entries = readTsvFile(outputPath + "/Entries.tsv");
+  maps = readTsvFile(outputPath + "/Maps.tsv");
+  // await sleep(10000);
+  return [outputPath, entries, maps, summary];
+}
+
 function getDimensions(evt, url) {
   w = "";
   h = "";
@@ -103,6 +123,7 @@ app.whenReady().then(() => {
   ipcMain.handle('dialog:browseFile', handleFileOpen)
   ipcMain.handle('click-submit', handleSubmitButton)
   ipcMain.handle('get-dimensions', getDimensions)
+  ipcMain.handle('fake-run', fakeRun)
   createWindow()
 
   app.on('activate', () => {
