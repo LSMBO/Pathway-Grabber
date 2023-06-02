@@ -1,3 +1,17 @@
+// global variables
+var IS_TEST = false;
+var DATA;
+var PATH = "";
+var ENTRIES = [];
+var ENTRIES_HEADER = [];
+var MAPS = [];
+var MAPS_HEADER = [];
+var SUMMARY = [];
+var LAST_ENTRY_COL;
+var ENTRY_SORT_DIR = "";
+var LAST_MAPS_COL;
+var MAPS_SORT_DIR = "";
+
 // get items
 const html = document.getElementsByTagName('html')[0];
 const progress = document.getElementById('progress');
@@ -110,7 +124,7 @@ function getIdentifierAnchors(data) {
   return anchors.join(" ");
 }
 
-function getPathwayAnchors(data, path) {
+function getPathwayAnchors(data) {
   anchors = [];
   maps = data.toString().split("\n");
   for (let i = 0; i < maps.length; i++) {
@@ -118,7 +132,7 @@ function getPathwayAnchors(data, path) {
       items = maps[i].split(":");
       text = items.shift();
       // on click, the content of the html file is displayed
-      anchors.push("<a title='" + items.join(" - ") + "' onclick='fillHtml(\"" + path + "/" + text + ".html\")'>" + text + "</a>")
+      anchors.push("<a title='" + items.join(" - ") + "' onclick='fillHtml(\"" + PATH + "/" + text + ".html\")'>" + text + "</a>")
     }
   }
   return anchors.join(" ");
@@ -133,63 +147,146 @@ function getStatusStyle(value) {
   return css;
 }
 
-function fillEntries(path, data) {
-  if(data.length == 0) { data = [["No data loaded yet."]]; }
+function sortEntries(event, column) {
+  // remove all classes from previous sorts
+  i = 0;
+  while(document.getElementById("ec"+i) != undefined) {
+    document.getElementById("ec"+i).className = "";
+    i++;
+  }
+  // update ENTRY_ROW_ORDER
+  if(column == "shuffle") {
+    ENTRIES.sort(() => Math.random() - 0.5);
+    LAST_ENTRY_COL = -1;
+    ENTRY_SORT_DIR = "";
+  } else {
+    // sort ASC by this column, unless it was already sorted in ASC before
+    if(LAST_ENTRY_COL == column && ENTRY_SORT_DIR == "asc") {
+      ENTRIES.sort(function (a, b) {
+        if(a[column] > b[column]) return -1;
+        if(a[column] < b[column]) return 1;
+        return 0;
+      });
+      ENTRY_SORT_DIR = "desc";
+    } else {
+      ENTRIES.sort(function (a, b) {
+        if(a[column] > b[column]) return 1;
+        if(a[column] < b[column]) return -1;
+        return 0;
+      });
+      ENTRY_SORT_DIR = "asc";
+    }
+    LAST_ENTRY_COL = column;
+  }
+  // call fillEntries again
+  fillEntries();
+}
+
+function fillEntries() {
   content = "";
-  for (let row = 0; row < data.length; row++) {
-    content += "<tr>";
-    for (let col = 0; col < data[row].length; col++) {
-      tag = row == 0 ? "th" : "td";
-      css = "";
-      cell = data[row][col];
-      if(row > 0) {
-        if(col == 0 || (col == 1 && data[0][1].includes("dentifier"))) {
-          cell = getIdentifierAnchors(cell);
-        } else if(col == data[row].length - 1) {
-          cell = getPathwayAnchors(cell, path)
-        }
-        css = getStatusStyle(cell);
-      }
-      content += "<" + tag + css + ">" + cell + "</" + tag + ">";
+  if(ENTRIES.length == 0) {
+    // nothing to display
+    content = "<tr><th>No data loaded yet.</th></tr>";
+  } else {
+    // add the header line
+    content = "<tr>";
+    for(let col = 0; col < ENTRIES_HEADER.length; col++) {
+      header = ENTRIES_HEADER[col] == "Pathway_Map:name:level_1:level_2" ? "Pathway maps" : ENTRIES_HEADER[col];
+      css = LAST_ENTRY_COL == col ? "class=\""+ENTRY_SORT_DIR+"\"" : "";
+      content += "<th id=\"ec"+col+"\" "+css+" onclick=\"sortEntries(event, "+col+")\">" + header + "</th>";
     }
     content += "</tr>";
+    // then the data
+    for(let row = 0; row < ENTRIES.length; row++) {
+      content += "<tr>";
+      for(let col = 0; col < ENTRIES[row].length; col++) {
+        cell = ENTRIES[row][col];
+        if(col == 0 || (col == 1 && ENTRIES[0][1].includes("dentifier"))) {
+          cell = getIdentifierAnchors(cell);
+        } else if(col == ENTRIES[row].length - 1) {
+          cell = getPathwayAnchors(cell)
+        }
+        content += "<td" + getStatusStyle(cell) + ">" + cell + "</td>";
+      }
+      content += "</tr>";
+    }
   }
   tblEntries.innerHTML = content;
 }
 
-function fillMaps(path, data) {
-  if(data.length == 0) { data = [["No data loaded yet."]]; }
+function sortMaps(event, column) {
+  // update MAPS_ROW_ORDER
+  if(column == "shuffle") {
+    MAPS.sort(() => Math.random() - 0.5);
+    LAST_MAPS_COL = -1;
+    MAPS_SORT_DIR = "";
+  } else {
+    // sort ASC by this column, unless it was already sorted in ASC before
+    if(LAST_MAPS_COL == column && MAPS_SORT_DIR == "ASC") {
+      MAPS.sort(function (a, b) {
+        if(a[column] > b[column]) return 1;
+        if(a[column] < b[column]) return -1;
+        return 0;
+      });
+      MAPS_SORT_DIR = "DESC";
+    } else {
+      MAPS.sort(function (a, b) {
+        if(a[column] > b[column]) return -1;
+        if(a[column] < b[column]) return 1;
+        return 0;
+      });
+      MAPS_SORT_DIR = "ASC";
+    }
+    LAST_MAPS_COL = column;
+  }
+  // call fillMaps again
+  fillMaps();
+}
+
+function fillMaps() {
   content = "";
-  for (let row = 0; row < data.length; row++) {
-    content += "<tr>";
-    for (let col = 0; col < data[row].length; col++) {
-      tag = row == 0 ? "th" : "td";
-      cell = data[row][col];
-      if(row > 0) {
-        if(col == 0) {
-          cell = getPathwayAnchors(cell, path)
-        } else if(col == data[row].length - 1) {
-          cell = getIdentifierAnchors(cell);
-        }
-      }
-      content += "<" + tag + ">" + cell + "</" + tag + ">";
+  if(MAPS.length == 0) {
+    // nothing to display
+    content = "<tr><th>No data loaded yet.</th></tr>";
+  } else {
+    // add the header line
+    content = "<tr>";
+    for(let col = 0; col < MAPS_HEADER.length; col++) {
+      css = LAST_ENTRY_COL == col ? "class=\""+ENTRY_SORT_DIR+"\"" : "";
+      content += "<th id=\"mc"+col+"\" "+css+" onclick=\"sortMaps(event, "+col+")\">" + MAPS_HEADER[col] + "</th>";
     }
     content += "</tr>";
+    // then the data
+    for(let row = 0; row < MAPS.length; row++) {
+      content += "<tr>";
+      for(let col = 0; col < MAPS[row].length; col++) {
+        cell = MAPS[row][col];
+        if(col == 0) {
+          cell = getPathwayAnchors(cell)
+        } else if(col == MAPS[row].length - 1) {
+          cell = getIdentifierAnchors(cell);
+        }
+        content += "<td" + getStatusStyle(cell) + ">" + cell + "</td>";
+      }
+      content += "</tr>";
+    }
   }
   tblMaps.innerHTML = content;
 }
 
-function fillSummary(data) {
-  if(data.length == 0) { data = [["No data loaded yet."]]; }
+function fillSummary() {
   content = "";
-  for (let row = 0; row < data.length; row++) {
-    content += "<tr>";
-    for (let col = 0; col < data[row].length; col++) {
-      value = data[row][col];
-      css = getStatusStyle(value);
-      content += "<td" + css + ">" + value + "</td>";
+  if(SUMMARY.length == 0) {
+    content = "<tr><th>No data loaded yet.</th></tr>";
+  } else {
+    for (let row = 0; row < SUMMARY.length; row++) {
+      content += "<tr>";
+      for (let col = 0; col < SUMMARY[row].length; col++) {
+        value = SUMMARY[row][col];
+        content += "<td" + getStatusStyle(value) + ">" + value + "</td>";
+      }
+      content += "</tr>";
     }
-    content += "</tr>";
   }
   tblAbout.innerHTML = content;
 }
@@ -232,9 +329,17 @@ function initialize() {
   pvalThreshold.value = 0.05;
   tukeyThreshold.value = 0.05;
   fcThreshold.value = 1.5;
-  fillEntries("", []);
-  fillMaps("", []);
-  fillSummary([]);
+
+  PATH = "";
+  ENTRIES = [];
+  ENTRIES_HEADER = [];
+  MAPS = [];
+  MAPS_HEADER = [];
+  SUMMARY = [];
+  fillEntries();
+  fillMaps();
+  fillSummary();
+
   document.getElementById("settings-tab").click();
   document.getElementById("p-site-col").style.display = "none";
   show("p-pval-col");
@@ -259,16 +364,26 @@ btnSubmit.addEventListener('click', async () => {
   const settings = [ inputFile.value, sheetNumber.value, headerLine.value, inputType.value, 
     hasSite.checked, inputContent.value, idCol.value, siteCol.value, pvalCol.value, tukeyCol.value, fcCol.value,  conditions.value, 
     pvalThreshold.value, tukeyThreshold.value, fcThreshold.value];
-  const data = await window.electronAPI.clickSubmit(settings);
+  const data = IS_TEST ? await window.electronAPI.fakeRun() : await window.electronAPI.clickSubmit(settings);
 
-  fillEntries(data[0], data[1]);
-  fillMaps(data[0], data[2]);
-  fillSummary(data[3]);
+  // store the output in global variables
+  PATH = data[0];
+  ENTRIES = data[1];
+  if(ENTRIES.length > 0) ENTRIES_HEADER = ENTRIES.shift();
+  MAPS = data[2];
+  if(MAPS.length > 0) MAPS_HEADER = MAPS.shift();
+  SUMMARY = data[3];
 
+  // display the data
+  fillEntries();
+  fillMaps();
+  fillSummary();
+  
   // await new Promise(r => setTimeout(r, 2000)); // only to simulate real computing
   hideProgress();
   btnExport.style.opacity = 100;
   document.getElementById("entries-tab").click();
+  IS_TEST = false;
 });
 
 btnReset.addEventListener('click', () => {
@@ -282,9 +397,8 @@ function keydownEvent(event) {
 }
 
 async function keyupEvent(event) {
-  if(event.key == 't') { 
-    // toggleProgress();
-    // inputFile.value = "D:/workspace/LSMBO/JuliaxyTools/test_data/kegg-uniprot.xlsx";
+  if(event.key === 't') {
+    IS_TEST = true;
     inputFile.value = await window.electronAPI.getTestInputFile();
     inputContent.value = "conditions";
     show("p-pval-col", "p-tukey-col", "p-fc-col", "p-conds");
@@ -292,6 +406,8 @@ async function keyupEvent(event) {
     pvalCol.value = "C";
     tukeyCol.value = "D";
     fcCol.value = "E";
+  } else if(event.key === 'Enter') {
+    if(getCurrentTabNumber() == 0) btnSubmit.click();
   }
 }
 
