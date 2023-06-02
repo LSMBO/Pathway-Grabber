@@ -5,6 +5,7 @@ function getCombinations()::Vector{String}
     codes = map(st -> st.code, collect(values(STATUS)))
     for set in powerset(codes)
         if(!isempty(set)) push!(combs, join(sort(set), "-")) end
+        # if(!isempty(set)) push!(combs, join(sort(unique(set)), "-")) end
     end
     return combs
 end
@@ -352,7 +353,8 @@ function getFullStatus(params::Params, entriesRef::Ref{Vector{Entry}}, genesRef:
                 end
             end
         end
-        fullStatus = join(sort(statuses), "-")
+        # fullStatus = join(sort(statuses), "-")
+        fullStatus = join(sort(unique(statuses)), "-")
     end
     return fullStatus
 end
