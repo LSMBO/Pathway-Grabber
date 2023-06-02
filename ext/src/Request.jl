@@ -1,6 +1,6 @@
 UNIPROT_REST_URL = "https://rest.uniprot.org"
 DEFAULT_MAX_WAIT_TIME = 120
-DEFAULT_SLEEP = 2
+DEFAULT_SLEEP = 1
 
 function REST_GET_generic(url::String, requestedHeaders = Vector{String}[])::Pair{String, Dict{String, String}}
     response = HTTP.get(url, decompress = false)
