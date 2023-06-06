@@ -1,6 +1,6 @@
 {
   "name": "pathwaygrabber",
-  "version": "3.1.0",
+  "version": "3.1.1",
   "description": "Retrieve Kegg maps from Uniprot entries or Kegg identifiers",
   "main": "index.js",
   "scripts": {
