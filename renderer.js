@@ -252,8 +252,9 @@ function fillMaps() {
     // add the header line
     content = "<tr>";
     for(let col = 0; col < MAPS_HEADER.length; col++) {
+      header = MAPS_HEADER[col] == "Nb identifiers" ? "# Identifiers" : MAPS_HEADER[col];
       css = LAST_ENTRY_COL == col ? "class=\""+ENTRY_SORT_DIR+"\"" : "";
-      content += "<th id=\"mc"+col+"\" "+css+" onclick=\"sortMaps(event, "+col+")\">" + MAPS_HEADER[col] + "</th>";
+      content += "<th id=\"mc"+col+"\" "+css+" onclick=\"sortMaps(event, "+col+")\">" + header + "</th>";
     }
     content += "</tr>";
     // then the data
