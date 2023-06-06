@@ -2,12 +2,13 @@ const { app, BrowserWindow, dialog, ipcMain } = require('electron')
 const path = require('path')
 const fs = require('fs');
 const fsex = require('fs-extra')
-const { execSync } = require('child_process');
+const { execSync, exec } = require('child_process');
 
 const JULIA_PATH = `${app.getAppPath()}/Julia-1.8.5/bin/julia.exe`;
 const PG_MAIN = `${app.getAppPath()}/ext/src/PathwayGrabber.jl`;
 const PG_PATH = `"${JULIA_PATH}" "${PG_MAIN}"`;
 var CURRENT_WORKING_DIRECTORY = "";
+const TEST_WORKING_DIRECTORY = `${app.getAppPath().replace(/\\/g, "/")}/test`;
 
 async function getTestInputFile() {
   return `${app.getAppPath()}/test/kegg-uniprot.xlsx`;
@@ -23,8 +24,10 @@ async function handleFileOpen() {
 async function exportOutput(evt) {
   const { filePath } = await dialog.showSaveDialog( { defaultPath: `PathwayGrabber-${Date.now()}.zip` })
   if (filePath) {
-    fsex.move(CURRENT_WORKING_DIRECTORY + "/PathwayGrabber.zip", filePath, { overwrite: true }, err => {
-      if (err) return console.error(err)
+    from = CURRENT_WORKING_DIRECTORY == "" ? TEST_WORKING_DIRECTORY + "/PathwayGrabber.zip" : CURRENT_WORKING_DIRECTORY + "/PathwayGrabber.zip";
+    fsex.copy(from, filePath, { overwrite: true }, err => {
+      if (err) return console.error(err);
+      else exec("explorer /select, \""+filePath+"\" ");
     })
   }
 }
@@ -83,12 +86,11 @@ function sleep(ms) {
 
 async function fakeRun(evt) {
   // get the test tsv files and load their content
-  outputPath = `${app.getAppPath().replace(/\\/g, "/")}/test`;
-  summary = readTsvFile(outputPath + "/Summary.tsv");
-  entries = readTsvFile(outputPath + "/Entries.tsv");
-  maps = readTsvFile(outputPath + "/Maps.tsv");
+  summary = readTsvFile(TEST_WORKING_DIRECTORY + "/Summary.tsv");
+  entries = readTsvFile(TEST_WORKING_DIRECTORY + "/Entries.tsv");
+  maps = readTsvFile(TEST_WORKING_DIRECTORY + "/Maps.tsv");
   // await sleep(10000);
-  return [outputPath, entries, maps, summary];
+  return [TEST_WORKING_DIRECTORY, entries, maps, summary];
 }
 
 function getDimensions(evt, url) {
