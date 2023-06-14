@@ -64,6 +64,8 @@ function handleSubmitButton(evt, settings) {
   cmd = `${PG_PATH} "${input}" "${sheet}" "${line}" "${type}" "${hasSite}" "${content}" "${idCol}" "${siteCol}" "${pvalCol}" "${tukeyCol}" "${fcCol}" "${conds}" "${pvalThreshold}" "${tukeyThreshold}" "${fcThreshold}"`;
   // run the command and deal with the output
   console.log(cmd)
+  // TODO add a timer to count the time needed (just for the log)
+  // TODO it would be nice to have the julia logs displayed in real time in the console
   const stdout = execSync(cmd)
   
   // get the path from the log

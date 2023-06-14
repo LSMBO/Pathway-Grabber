@@ -221,6 +221,7 @@ function sortMaps(event, column) {
     LAST_MAPS_COL = -1;
     MAPS_SORT_DIR = "";
   } else {
+    // FIXME the sort is alphanumerical, it means that 9 > 80
     // sort ASC by this column, unless it was already sorted in ASC before
     if(LAST_MAPS_COL == column && MAPS_SORT_DIR == "ASC") {
       MAPS.sort(function (a, b) {

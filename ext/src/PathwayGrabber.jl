@@ -10,6 +10,27 @@ include(string(@__DIR__, "/Xlsx.jl"))
 include(string(@__DIR__, "/HtmlMaker.jl"))
 include(string(@__DIR__, "/Common.jl"))
 
+#=
+TODO Add a better way to run use it from the GUI
+- In the GUI, we should return the list of entries and maps directly, without generating or downloading anything
+- When displaying a map, then we download it on the fly and generate its map that we store in the job directory
+- When exporting the whole thing, then we download and generate all the remaining maps, and that may take a while
+- It means that we need add some intermediate functions that we can call from the GUI
+  - function to create the temp dir and everything up to getKeggData, then format the output as tsv files and return them, along with the temp dir (if possible, generate the excel file there too)
+  - function that takes the temp dir and a kegg id, runs downloadUpdateGenerate for that particular id and return the html file
+  - function that takes the temp dir and generates all the remaining html files, then generates the excel file and the zip file and return it
+
+TODO in the GUI
+- Tooltip the protein ids with their name from uniprot in both tabs
+- Tooltip the kegg ids with their name in the pathway tab as well
+- Add a way to search and filter (add a search button on the far right ?)
+
+TODO html map
+- Instead of "Press L to display the legend", put the name of the pathway, and a burger menu
+- Add a search tool ?
+- Add zoom options ?
+=#
+
 # function run(json::Dict{String, Any}, inputFileName::String, generateTsvFiles::Bool = false, cleanTempDir::Bool = true)::Tuple{String, String}
 function run(json::Dict{String, Any}, inputFileName::String, generateTsvFiles::Bool = false, cleanTempDir::Bool = true)::String
     # log as soon as possible
