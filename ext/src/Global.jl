@@ -1,5 +1,6 @@
 KEGG_URL = "https://rest.kegg.jp"
-KEGG_WWW = "https://rest.kegg.jp"
+# KEGG_WWW = "https://rest.kegg.jp"
+KEGG_WWW = "https://www.kegg.jp"
 CACHE_MAX_AGE_IN_DAYS = 2 * 30 # 2 months
 FORCE_UPDATE = false
 
